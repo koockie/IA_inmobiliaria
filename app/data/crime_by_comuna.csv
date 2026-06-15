@@ -1,0 +1,18 @@
+# DATOS DE EJEMPLO / PLACEHOLDER - NO son cifras oficiales reales.
+# Reemplazar con la descarga oficial de CEAD (https://cead.spd.gov.cl) por comuna.
+# Columnas: comuna,region,tasa_delitos_100k_hab,anio
+comuna,region,tasa_delitos_100k_hab,anio
+Santiago,Region Metropolitana,9500,2023
+Providencia,Region Metropolitana,7200,2023
+Las Condes,Region Metropolitana,5100,2023
+Nunoa,Region Metropolitana,6300,2023
+Maipu,Region Metropolitana,5800,2023
+La Florida,Region Metropolitana,6000,2023
+Puente Alto,Region Metropolitana,5600,2023
+Vitacura,Region Metropolitana,3900,2023
+Estacion Central,Region Metropolitana,8800,2023
+Recoleta,Region Metropolitana,7600,2023
+Valparaiso,Region de Valparaiso,7100,2023
+Vina del Mar,Region de Valparaiso,6500,2023
+Concepcion,Region del Biobio,6800,2023
+Zapallar,Region de Valparaiso,2100,2023

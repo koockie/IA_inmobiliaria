@@ -1,0 +1,35 @@
+[
+  {
+    "place_id": 1708371,
+    "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+    "osm_type": "way",
+    "osm_id": 22341592,
+    "lat": "-33.4143471",
+    "lon": "-70.5846295",
+    "category": "highway",
+    "type": "primary",
+    "place_rank": 26,
+    "importance": 0.053389208056763525,
+    "addresstype": "road",
+    "name": "Avenida Apoquindo",
+    "display_name": "Avenida Apoquindo, Barrio San Pascual, Las Condes, Santiago, Provincia de Santiago, Región Metropolitana de Santiago, 8320000, Chile",
+    "address": {
+      "road": "Avenida Apoquindo",
+      "neighbourhood": "Barrio San Pascual",
+      "suburb": "Las Condes",
+      "city": "Santiago",
+      "county": "Provincia de Santiago",
+      "state": "Región Metropolitana de Santiago",
+      "ISO3166-2-lvl4": "CL-RM",
+      "postcode": "8320000",
+      "country": "Chile",
+      "country_code": "cl"
+    },
+    "boundingbox": [
+      "-33.4145760",
+      "-33.4140554",
+      "-70.5853511",
+      "-70.5839295"
+    ]
+  }
+]
