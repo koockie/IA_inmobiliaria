@@ -1,10 +1,4 @@
-"""Runner local interactivo para probar el flujo de agentes.
 
-Uso:
-    python cli.py
-Escribe "hola" para el agente conversacional, o una dirección para el análisis.
-Comandos: 'salir' para terminar.
-"""
 from __future__ import annotations
 
 import json
@@ -14,7 +8,7 @@ from langchain_core.messages import AIMessage, HumanMessage
 
 load_dotenv()
 
-from app.graph import graph  # noqa: E402  (cargar tras load_dotenv)
+from app.graph import graph  
 
 
 def main() -> None:

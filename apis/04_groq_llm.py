@@ -14,7 +14,7 @@ API_KEY = os.getenv("GROQ_API_KEY")
 if not API_KEY:
     raise SystemExit("Falta GROQ_API_KEY en .env")
 
-# Mismo formato que OpenAI: /chat/completions
+# /chat/completions
 URL = "https://api.groq.com/openai/v1/chat/completions"
 HEADERS = {"Authorization": f"Bearer {API_KEY}"}
 BODY = {

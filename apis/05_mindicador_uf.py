@@ -1,14 +1,9 @@
 """
-DESCUBRIMIENTO API #5 (BONUS cuantitativo) — mindicador.cl
-==========================================================
-¿Qué es?   Indicadores económicos de Chile en tiempo real: UF, UTM, dólar, euro,
-           IPC, etc. En Chile las propiedades se transan en UF, así que esto sirve
-           para normalizar precios y cálculos (cap rate, plusvalía).
-¿Cuesta?   GRATIS, sin API key.
-Docs:      https://mindicador.cl/
+probando mindicador.cl para pasar a UF
+Docs: https://mindicador.cl/
 
 Ejecutar:  python apis/05_mindicador_uf.py
-Salida:    consola + apis/outputs/mindicador.json
+Salida:   consola + apis/outputs/mindicador.json
 """
 import json
 from pathlib import Path

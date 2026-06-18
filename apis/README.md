@@ -1,20 +1,3 @@
-# Descubrimiento de APIs 🔍
-
-Scripts simples y autocontenidos para **ver qué devuelve cada API** que usamos en el POC.
-Cada uno: llama a la API con parámetros hardcodeados, imprime un resumen por consola y guarda
-la respuesta **completa** en `apis/outputs/<api>.json`.
-
-| # | Script | API | ¿Key? | Para qué sirve |
-|---|--------|-----|-------|----------------|
-| 3 | `03_tavily_search.py` | Tavily | Sí (.env) | Búsqueda web: proyectos, plan regulador, noticias del sector |
-| 4 | `04_groq_llm.py` | Groq | Sí (.env) | LLM gratis (compatible con OpenAI) |
-| 5 | `05_mindicador_uf.py` | mindicador.cl | No | UF/UTM/dólar (cuantitativo, bonus) |
-| 6 | `06_cead_delincuencia.py` | CEAD (CSV) | No | Estado del dataset comunal de delincuencia |
-| 7 | `07_google_places.py` | Google Maps | Sí (.env) | Geocoding + lugares cercanos (reemplaza a OSM) |
-| 8 | `08_censo_manzana.py` | INE Censo 2024 | No | Contexto socioeconómico a nivel manzana (ArcGIS) |
-
-> Los scripts `01_nominatim` y `02_overpass` (OpenStreetMap) se movieron a `apis/legacy/`
-> porque se reemplazaron por Google Maps (#7).
 
 ## Cómo correrlos
 

@@ -1,25 +1,11 @@
-"""
-DESCUBRIMIENTO API #6 — CEAD (Estadísticas Delictuales por Comuna)
-==================================================================
-¿Qué es?   El CEAD (Centro de Estudios y Análisis del Delito) es la fuente oficial
-           del Ministerio de Seguridad Pública para estadísticas de delincuencia
-           por región, provincia y comuna en Chile.
-
-¿Tiene API pública?  NO. El sitio usa una interfaz web interactiva con filtros
-           (territorio, tipo de delito, año) y un botón de descarga que genera
-           un Excel dinámicamente. No hay una URL fija que se pueda automatizar
-           de forma simple y oficial.
-
+"""CEAD (para estadísticas Delictuales por Comuna)
+es la fuente oficial  del Ministerio de Seguridad Pública para estadísticas de delincuencia
+ por región, provincia y comuna en Chile.
+no tiene api public, habria q descargar los datos en excel.
 Fuente:    https://cead.minsegpublica.gob.cl/estadisticas-delictuales/
 
-CÓMO OBTENER LOS DATOS REALES:
-───────────────────────────────
+
 1. Ir a: https://cead.minsegpublica.gob.cl/estadisticas-delictuales/
-2. Seleccionar:
-   - Territorio    → todas las comunas
-   - Tipo de dato  → Casos policiales
-   - Delito        → DMCS (Delitos de Mayor Connotación Social)
-   - Período       → el año más reciente disponible
 3. Clic en "Descargar" → guardar como:  app/data/cead_raw.xlsx
 4. Correr el parser:
        python app/tools/parse_cead_excel.py

@@ -1,16 +1,7 @@
 """
-DESCUBRIMIENTO API #7 — Google Maps Platform (Geocoding + Places New)
-=====================================================================
-¿Qué es?   Geocoding API (dirección -> lat/lon + comuna) y Places API New
-           (searchNearby: lugares cercanos por tipo). Reemplaza a OSM.
-¿Cuesta?   Requiere API key con BILLING activo. Tiene topes gratis mensuales por SKU.
-           La key se lee desde .env (NO se hardcodea).
+Google Maps Platform (Geocoding + Places New)
+ Geocoding API (dirección -> lat/lon + comuna) y Places API New
 Docs:      https://developers.google.com/maps/documentation/places/web-service/nearby-search
-
-Requisitos en Google Cloud:
-  1. Crear proyecto y activar facturación.
-  2. Habilitar "Geocoding API" y "Places API (New)".
-  3. Crear API key y ponerla en .env como GOOGLE_MAPS_API_KEY.
 
 Ejecutar:  python apis/07_google_places.py
 Salida:    consola + apis/outputs/google_geocoding.json y google_places.json
@@ -32,8 +23,7 @@ if not API_KEY:
 out_dir = Path(__file__).parent / "outputs"
 out_dir.mkdir(exist_ok=True)
 
-# ---- 1) GEOCODING v4: dirección -> coordenadas + comuna ----
-# Endpoint NUEVO (la Demo Key lo soporta sin billing).
+
 DIRECCION = "Av. Apoquindo 4000, Las Condes, Santiago, Chile"
 print(f"[Geocoding v4] {DIRECCION}\n")
 geo_resp = httpx.get(

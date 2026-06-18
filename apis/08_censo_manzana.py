@@ -1,20 +1,7 @@
 """
-DESCUBRIMIENTO API #8 — Censo 2024 INE a nivel MANZANA (ArcGIS FeatureServer)
-=============================================================================
-¿Qué es?   El INE publica la capa "Manzana Entidad Censo 2024" (189 variables de
-           personas, hogares y viviendas) sobre infraestructura ArcGIS. Se consulta
-           el FeatureServer REST por punto (intersección) y devuelve la manzana que
-           contiene la coordenada con todos sus atributos.
-¿Cuesta?   Gratis, sin API key.
-
-OJO: la URL exacta de la capa hay que confirmarla en el servidor ArcGIS del INE.
-     Directorio REST (abrir en el navegador): https://sig.ine.cl/server/rest/services
-     Buscar la carpeta/servicio del Censo 2024 con manzanas (p. ej. Open_Data/Censos/MapServer).
-     La URL de la capa termina en .../MapServer/<id>  o  .../FeatureServer/<id>
-     Ponla en .env como INE_ARCGIS_LAYER_URL (este script le agrega /query).
-     (El dominio antiguo geoine-ine-chile.opendata.arcgis.com ya no existe.)
-
+Censo 2024 INE a nivel MANZANA (ArcGIS FeatureServer)
 Este script: dada una coordenada, consulta la capa y muestra los atributos de esa manzana.
+NO ESTA FUNCIONANDOOO
 
 Ejecutar:  python apis/08_censo_manzana.py
 Salida:    consola + apis/outputs/censo_manzana.json
@@ -28,7 +15,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Coordenada de prueba (Apoquindo 4000, Las Condes)
+# Coordenada de prueba 
 LAT, LON = -33.4122219, -70.5792485
 
 # Confirmar y pegar la URL real de la capa (o setear INE_ARCGIS_LAYER_URL en .env)

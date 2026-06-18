@@ -1,8 +1,5 @@
 """Configuración central y factory de LLM agnóstico de proveedor.
-
-La idea: los nodos del grafo NUNCA importan un proveedor concreto. Piden un LLM con
-`get_llm()` y, según `LLM_PROVIDER`, se entrega Groq (gratis, local) u OpenAI (producción
-en DigitalOcean). Cambiar de proveedor es solo cambiar variables de entorno.
+Cambiar de proveedor es solo cambiar variables de entorno.
 """
 from __future__ import annotations
 
@@ -15,7 +12,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     # LLM
-    llm_provider: str = "groq"          # "groq" (local/gratis) | "openai" (prod)
+    llm_provider: str = "groq"          # "groq" 
     llm_model: str = "llama-3.3-70b-versatile"
     groq_api_key: str | None = None
     openai_api_key: str | None = None

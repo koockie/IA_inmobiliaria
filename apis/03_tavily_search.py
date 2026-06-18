@@ -1,14 +1,11 @@
 """
-DESCUBRIMIENTO API #3 — Tavily (búsqueda web para IA)
-=====================================================
-¿Qué es?   Un buscador pensado para agentes/LLM: le mandas una pregunta en texto
-           y te devuelve resultados web ya "limpios" (título, contenido, url),
+ Tavily es como un navegador para buscar en la web para la IA.
+le mandas una pregunta en texto y te devuelve resultados web ya "limpios" (título, contenido, url),
            listos para que un modelo los resuma.
-¿Cuesta?   Tier gratis ~1000 créditos/mes (sin tarjeta). Cada búsqueda gasta 1 crédito.
-           Necesita API KEY -> la leemos desde .env (NO se hardcodea en el script).
-Docs:      https://docs.tavily.com/
+Tier gratis ~1000 créditos/mes (sin tarjeta). Cada búsqueda gasta 1 crédito.
+Docs:      https://docs.tavily.com/ (necesita api key actualmente a mi cta marcelofernandez)
 
-Ejecutar:  python apis/03_tavily_search.py
+probar:  python apis/03_tavily_search.py
 Salida:    consola + apis/outputs/tavily.json
 """
 import json
