@@ -2,8 +2,8 @@
 from __future__ import annotations
 
 from app.tools.crime import crime_context
-from app.tools.geocoding import haversine_m
-from app.tools.pois import _build_query, _classify
+from app.tools.google_geocoding import haversine_m, parse_geocode_result
+from app.tools.google_places import CATEGORIES
 
 
 def test_haversine_zero():
@@ -16,19 +16,42 @@ def test_haversine_known_distance():
     assert 950 < d < 1050
 
 
-def test_classify_categories():
-    assert _classify({"amenity": "school"}) == "colegios"
-    assert _classify({"highway": "bus_stop"}) == "locomocion"
-    assert _classify({"shop": "supermarket"}) == "abastecimiento"
-    assert _classify({"leisure": "park"}) == "areas_verdes"
-    assert _classify({"amenity": "hospital"}) == "salud"
-    assert _classify({"amenity": "fuel"}) is None
+def test_google_categories_cubren_lo_esperado():
+    # Las categorías del análisis deben existir con tipos de Google asociados
+    assert set(CATEGORIES) == {
+        "colegios", "universidades", "locomocion", "abastecimiento", "areas_verdes", "salud"
+    }
+    assert "school" in CATEGORIES["colegios"]
+    # 'university' debe estar SEPARADO de 'colegios' (no contaminar)
+    assert "university" not in CATEGORIES["colegios"]
+    assert CATEGORIES["universidades"] == ["university"]
+    assert "supermarket" in CATEGORIES["abastecimiento"]
+    assert all(len(types) >= 1 for types in CATEGORIES.values())
 
 
-def test_build_query_contains_point_and_radius():
-    q = _build_query(-33.45, -70.66, 800)
-    assert "around:800,-33.45,-70.66" in q
-    assert q.startswith("[out:json]")
+def test_parse_geocode_result_extrae_comuna_y_region():
+    # Respuesta simulada de la Geocoding API v4 para una dirección en Las Condes
+    result = {
+        "formattedAddress": "Av. Apoquindo 4000, Las Condes, Región Metropolitana, Chile",
+        "location": {"latitude": -33.41, "longitude": -70.58},
+        "addressComponents": [
+            {"longText": "4000", "types": ["street_number"]},
+            {"longText": "Avenida Apoquindo", "types": ["route"]},
+            {"longText": "Barrio El Golf", "types": ["neighborhood", "political"]},
+            {"longText": "Las Condes", "types": ["locality", "political"]},
+            {"longText": "Las Condes", "types": ["administrative_area_level_3", "political"]},
+            {"longText": "Santiago", "types": ["administrative_area_level_2", "political"]},
+            {"longText": "Región Metropolitana", "types": ["administrative_area_level_1", "political"]},
+            {"longText": "Chile", "types": ["country", "political"]},
+        ],
+    }
+    parsed = parse_geocode_result(result)
+    assert parsed["lat"] == -33.41
+    assert parsed["lon"] == -70.58
+    assert parsed["comuna"] == "Las Condes"
+    assert parsed["region"] == "Región Metropolitana"
+    assert parsed["barrio"] == "Barrio El Golf"
+    assert "Apoquindo" in parsed["display_name"]
 
 
 def test_crime_context_known_comuna():

@@ -5,7 +5,7 @@ from langchain_core.messages import HumanMessage, SystemMessage
 
 from app.config import get_llm
 from app.state import GraphState, PropertyInput
-from app.tools.geocoding import geocode
+from app.tools.google_geocoding import geocode
 
 SYSTEM = (
     "Extrae los datos de la oferta inmobiliaria mencionada por el usuario. Si falta un "

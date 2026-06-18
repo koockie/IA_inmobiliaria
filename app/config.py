@@ -23,8 +23,14 @@ class Settings(BaseSettings):
     # Búsqueda web
     tavily_api_key: str | None = None
 
-    # Geocoding
-    nominatim_user_agent: str = "inmobiliaria-poc/0.1"
+    # Google Maps Platform (Geocoding API + Places API New)
+    google_maps_api_key: str | None = None
+
+    # Censo INE a nivel manzana. El INE usa infraestructura ArcGIS: se consulta un
+    # FeatureServer REST por punto (intersección). La URL de la capa "Manzana Entidad
+    # Censo 2024" se confirma desde geoine-ine-chile.opendata.arcgis.com y se pone aquí.
+    # Formato esperado: https://services.arcgis.com/<org>/ArcGIS/rest/services/<capa>/FeatureServer/0
+    ine_arcgis_layer_url: str | None = None
 
     # Parámetros
     poi_radius_m: int = 1000

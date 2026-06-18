@@ -20,6 +20,11 @@ DISCLAIMER = (
     "oficiales de CEAD."
 )
 
+FUENTE = {
+    "nombre": "CEAD — Centro de Estudios y Análisis del Delito (Subsecretaría de Prevención del Delito)",
+    "url": "https://cead.minsegpublica.gob.cl/estadisticas-delictuales/",
+}
+
 
 def _normalize(name: str) -> str:
     """minúsculas + sin acentos, para hacer match robusto de comunas."""
@@ -82,4 +87,5 @@ def crime_context(comuna: Optional[str]) -> dict:
         "promedio_dataset_100k": round(promedio),
         "comparacion": relativo,
         "disclaimer": DISCLAIMER,
+        "fuente": FUENTE,
     }

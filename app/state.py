@@ -47,8 +47,9 @@ class GraphState(TypedDict, total=False):
     # Análisis de propiedad
     property: dict[str, Any]          # PropertyInput serializado
     geo: Optional[dict[str, Any]]     # {lat, lon, comuna, display_name} o None si falla
-    pois: dict[str, Any]              # resultado rama POIs
-    crime: dict[str, Any]             # resultado rama delincuencia
+    pois: dict[str, Any]              # resultado rama POIs (Google Places)
+    crime: dict[str, Any]             # resultado rama delincuencia (CEAD comunal)
+    census: dict[str, Any]            # contexto socioeconómico del sector (Censo manzana)
     search_queries: list[str]         # queries del planner
     research: list[dict[str, Any]]    # hallazgos de Tavily
     report: dict[str, Any]            # informe final del synthesizer

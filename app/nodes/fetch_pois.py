@@ -1,9 +1,9 @@
-"""Rama estructurada: POIs cercanos (Overpass). Determinista, sin LLM."""
+"""Rama estructurada: POIs cercanos (Google Places). Determinista, sin LLM."""
 from __future__ import annotations
 
 from app.config import get_settings
 from app.state import GraphState
-from app.tools.pois import fetch_pois as _fetch_pois
+from app.tools.google_places import fetch_pois as _fetch_pois
 
 
 def fetch_pois(state: GraphState) -> dict:

@@ -7,11 +7,16 @@ from app.config import get_llm
 from app.state import GraphState, SearchPlan
 
 SYSTEM = (
-    "Genera entre 3 y 4 consultas de búsqueda web ESPECÍFICAS para evaluar el potencial "
-    "de plusvalía y desarrollo del entorno de una propiedad en Chile. Enfócate en: "
-    "nuevos proyectos inmobiliarios/condominios, permisos de edificación, plan regulador "
-    "y obras de conectividad o infraestructura de la comuna. Incluye el nombre de la "
-    "comuna y, si aporta, el año actual. No incluyas consultas sobre delincuencia."
+    "Genera entre 3 y 4 consultas de búsqueda web ESPECÍFICAS para profundizar en el "
+    "entorno de una propiedad en Chile, mezclando dos niveles:\n"
+    "1) COMUNA: nuevos proyectos inmobiliarios/condominios, permisos de edificación, plan "
+    "regulador, obras de conectividad o infraestructura.\n"
+    "2) BARRIO/SECTOR (más fino que la comuna): usa el nombre del barrio, villa o calle "
+    "principal si está disponible para buscar desarrollo del sector y también noticias "
+    "recientes de seguridad o incidentes del sector.\n"
+    "Incluye el nombre de la comuna y, si aporta, el barrio y el año actual. Las consultas "
+    "de seguridad son para CONTEXTO noticioso del sector; el dato oficial de delincuencia "
+    "viene aparte (CEAD), así que no las plantees como cifras definitivas."
 )
 
 
@@ -24,7 +29,8 @@ def query_planner(state: GraphState) -> dict:
     if not comuna and not direccion:
         return {"search_queries": []}
 
-    user = f"Dirección: {direccion}\nComuna: {comuna}"
+    display = geo.get("display_name") or ""
+    user = f"Dirección: {direccion}\nComuna: {comuna}\nUbicación completa: {display}"
     llm = get_llm(temperature=0.3).with_structured_output(SearchPlan)
     plan: SearchPlan = llm.invoke(
         [SystemMessage(content=SYSTEM), HumanMessage(content=user)]

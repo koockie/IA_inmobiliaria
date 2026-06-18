@@ -3,12 +3,13 @@
 Flujo:
     router ──(chat)──▶ conversational ──▶ END
            └─(analyze)▶ extract ──▶ geocode(en extract) ──▶ fan-out
-                            ├── fetch_pois ─────────────┐
-                            ├── fetch_crime ────────────┤
+                            ├── fetch_pois (Google Places) ─┐
+                            ├── fetch_crime (CEAD comunal) ─┤
+                            ├── fetch_census (Censo manzana)┤
                             └── query_planner ▶ tavily_researcher
-                                                        │ (fan-in)
-                                                        ▼
-                                                   synthesizer ──▶ END
+                                                            │ (fan-in)
+                                                            ▼
+                                                       synthesizer ──▶ END
 """
 from __future__ import annotations
 
@@ -16,6 +17,7 @@ from langgraph.graph import END, START, StateGraph
 
 from app.nodes.conversational import conversational
 from app.nodes.extract import extract
+from app.nodes.fetch_census import fetch_census
 from app.nodes.fetch_crime import fetch_crime
 from app.nodes.fetch_pois import fetch_pois
 from app.nodes.query_planner import query_planner
@@ -33,6 +35,7 @@ def build_graph():
     g.add_node("extract", extract)
     g.add_node("fetch_pois", fetch_pois)
     g.add_node("fetch_crime", fetch_crime)
+    g.add_node("fetch_census", fetch_census)
     g.add_node("query_planner", query_planner)
     g.add_node("tavily_researcher", tavily_researcher)
     g.add_node("synthesizer", synthesizer)
@@ -45,15 +48,17 @@ def build_graph():
     )
     g.add_edge("conversational", END)
 
-    # fan-out desde extract a las dos ramas (paralelas)
+    # fan-out desde extract a las ramas (paralelas)
     g.add_edge("extract", "fetch_pois")
     g.add_edge("extract", "fetch_crime")
+    g.add_edge("extract", "fetch_census")
     g.add_edge("extract", "query_planner")
     g.add_edge("query_planner", "tavily_researcher")
 
-    # fan-in: synthesizer espera a las tres entradas antes de ejecutarse
+    # fan-in: synthesizer espera a todas las entradas antes de ejecutarse
     g.add_edge("fetch_pois", "synthesizer")
     g.add_edge("fetch_crime", "synthesizer")
+    g.add_edge("fetch_census", "synthesizer")
     g.add_edge("tavily_researcher", "synthesizer")
     g.add_edge("synthesizer", END)
 
