@@ -1,0 +1,14 @@
+# Stack ML - Python 3.14.5 (cp314). Separado de requirements.txt (deps del scraper).
+# Instalar:  .venv/Scripts/python.exe -m pip install -r requirements-ml.txt
+pandas>=3.0
+scikit-learn>=1.9
+scipy
+lightgbm>=4.7          # wheel py3-none-win_amd64 (universal)
+xgboost>=3.0           # wheel py3-none-win_amd64 (universal)
+statsmodels>=0.14.6    # OLS y VIF del baseline; wheel cp314 verificado
+joblib>=1.4
+
+# NO shap: no tiene wheel cp314 (solo cp38-cp313). TreeSHAP se obtiene del booster
+# nativo de LightGBM (pred_contrib=True) y XGBoost (pred_contribs=True), que es la
+# misma implementacion en C++ que la libreria envuelve.
+# NO libpysal/esda: la I de Moran se implementa en ml/baseline.py con sklearn.

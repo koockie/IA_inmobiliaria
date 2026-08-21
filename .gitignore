@@ -11,3 +11,6 @@ venv/
 *.sqlite-journal
 *.sqlite-wal
 *.sqlite-shm
+
+# Modelos serializados (los .json de metricas SI se versionan: son la evidencia)
+ml/artifacts/*.joblib

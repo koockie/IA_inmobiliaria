@@ -6,11 +6,17 @@ Ejecutar en VS Code: abrir este archivo y presionar Ctrl+F5
 Se puede correr aunque el scraper esté extrayendo en paralelo (lectura solo-lectura).
 """
 import sqlite3
+import sys
 from pathlib import Path
 from statistics import median
 
-DB = Path(__file__).parent / "data" / "ofertas.sqlite"
-CSV = Path(__file__).parent / "data" / "dataset_ofertas.csv"
+# Base vigente: la deduplicada. Se puede apuntar a otra con  --db <ruta>
+DATA = Path(__file__).parent / "data"
+DB = DATA / "ofertas_sinduplicados.sqlite"
+CSV = DATA / "ofertas_sinduplicados.csv"
+if "--db" in sys.argv:
+    DB = Path(sys.argv[sys.argv.index("--db") + 1])
+    CSV = DB.with_suffix(".csv")
 
 if not DB.exists():
     raise SystemExit(f"No existe la base todavía: {DB}\nCorre primero el scraper.")

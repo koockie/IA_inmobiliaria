@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "inmobiliaria-ml"
+version = "0.1.0"
+description = "Modelos hedonicos de valoracion inmobiliaria para 4 comunas de Santiago"
+requires-python = ">=3.14"
+dependencies = ["httpx>=0.27", "beautifulsoup4>=4.12", "lxml>=5.0"]
+
+[project.optional-dependencies]
+ml = ["pandas>=3.0", "scikit-learn>=1.9", "scipy", "lightgbm>=4.7", "xgboost>=3.0",
+      "statsmodels>=0.14.6", "joblib>=1.4"]
+api = ["fastapi>=0.115", "uvicorn>=0.30", "pydantic>=2.9"]
+dev = ["pytest>=9.0"]
+
+[tool.setuptools]
+packages = ["ml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-q --strict-markers"
+markers = [
+    "slow: entrena modelos reales, tarda",
+    "necesita_db: requiere data/ofertas_unificado.sqlite",
+]
+# Red de seguridad para pandas 3.0 (copy-on-write y string dtype por defecto):
+# cualquier patron deprecado revienta el test en vez de pasar en silencio.
+filterwarnings = ["error::FutureWarning", "error::DeprecationWarning"]
