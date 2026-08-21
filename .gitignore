@@ -14,3 +14,6 @@ venv/
 
 # Modelos serializados (los .json de metricas SI se versionan: son la evidencia)
 ml/artifacts/*.joblib
+
+# Jupyter
+.ipynb_checkpoints/
