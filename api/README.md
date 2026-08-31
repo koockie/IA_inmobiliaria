@@ -1,7 +1,13 @@
-# API de análisis de inversión inmobiliaria
+# API de tasación inmobiliaria
 
-Servicio HTTP que envuelve los dos modelos entrenados (`modelos/venta.joblib` y
-`modelos/arriendo.joblib`) y añade la capa de decisión de inversión.
+Servicio HTTP que sirve los dos modelos entrenados (`modelos/venta.joblib` y
+`modelos/arriendo.joblib`) y nada más. Recibe los atributos de una propiedad y
+devuelve el precio de venta y el arriendo esperados, cada uno con su rango y su
+nivel de confianza.
+
+**Alcance deliberado.** Toda la lógica de negocio —financiamiento, rentabilidad,
+informe— vive fuera de este servicio, en el backend que lo consume. Aquí solo
+está lo necesario para que los dos modelos funcionen.
 
 ## Correr en local
 
@@ -18,10 +24,12 @@ Documentación interactiva en `http://127.0.0.1:8000/docs`.
 | `GET` | `/salud` | Carga los dos modelos y devuelve sus métricas. Es el health check. |
 | `GET` | `/modelos/{venta\|arriendo}` | La ficha completa: métricas, variables y sesgos declarados. |
 | `POST` | `/estimar` | Precio de venta y arriendo esperados, con rango y confianza. |
-| `POST` | `/analizar` | El informe completo, incluido el análisis de inversión. |
+
+`precio_pedido_uf` es opcional: si se envía, la respuesta añade `juicio_de_precio`,
+que compara lo pedido contra lo estimado en unidades del error propio del modelo.
 
 ```bash
-curl -s localhost:8000/analizar -H 'content-type: application/json' -d '{
+curl -s localhost:8000/estimar -H 'content-type: application/json' -d '{
   "propiedad": {"m2_util": 82, "m2_total": 91, "tipo": "departamento",
                 "comuna": "nunoa", "dormitorios": 2, "banos": 2,
                 "estacionamientos": 1, "ano_construccion": 2009,
@@ -29,13 +37,18 @@ curl -s localhost:8000/analizar -H 'content-type: application/json' -d '{
   "precio_pedido_uf": 6402}'
 ```
 
+El contrato está publicado en `/openapi.json`. El backend que consuma este
+servicio puede generar sus tipos desde ahí en vez de escribirlos a mano:
+
+```bash
+npx openapi-typescript http://localhost:8000/openapi.json -o src/tasacion.ts
+```
+
 ## Estructura
 
 ```
 api/features.py    construccion de variables — UNICA definicion, compartida con los notebooks
 api/modelos.py     carga de los .joblib, estimacion con rango coherente y confianza
-api/inversion.py   dividendo, flujo, VAN/TIR, plusvalia requerida y simulacion
-api/informe.py     render del analisis a HTML
 api/main.py        endpoints
 ```
 
@@ -64,8 +77,8 @@ doctl apps create --spec .do/app.yaml
 ### Opción B — contenedor
 
 ```bash
-docker build -t inmobiliaria-api .
-docker run -p 8080:8080 inmobiliaria-api
+docker build -t tasacion .
+docker run -p 8080:8080 tasacion
 ```
 
 El `Dockerfile` instala `libgomp1` a propósito: XGBoost lo necesita para OpenMP
@@ -89,10 +102,8 @@ distinto.
 
 ```bash
 ./.venv/Scripts/python.exe qa/qa_modelos.py
-./.venv/Scripts/python.exe qa/qa_inversion.py
 ```
 
-El primero reproduce ambos notebooks, comprueba que los `.joblib` devuelven las
-métricas de su ficha, verifica que no hay fugas y prueba la API de punta a
-punta. El segundo verifica la aritmética financiera contra valores conocidos.
-Los dos devuelven código de salida distinto de cero si algo falla.
+Reproduce ambos notebooks, comprueba que los `.joblib` devuelven las métricas de
+su ficha, verifica que no hay fugas y prueba la API de punta a punta. Devuelve
+código de salida distinto de cero si algo falla.

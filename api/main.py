@@ -1,10 +1,11 @@
-"""API de analisis de inversion inmobiliaria.
+"""API de tasacion inmobiliaria.
 
     ./.venv/Scripts/python.exe -m uvicorn api.main:app --reload
 
-Tres endpoints y una idea: el backend manda los atributos que extrajo del aviso
-y recibe de vuelta el analisis completo. Todo lo que devuelve viene acompanado
-de su incertidumbre; no hay ningun numero presentado como certeza.
+Sirve los dos modelos entrenados y nada mas: recibe los atributos de una
+propiedad y devuelve el precio de venta y el arriendo esperados, cada uno con
+su rango y su nivel de confianza. Toda la logica de negocio -- financiamiento,
+rentabilidad, informe -- vive fuera de este servicio.
 """
 from __future__ import annotations
 
@@ -13,27 +14,20 @@ from pathlib import Path
 from typing import Any, Literal
 
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import HTMLResponse
 from pydantic import BaseModel, Field
 
-from . import informe as INF
-from . import inversion as INV
 from . import modelos as M
 
 RAIZ = Path(__file__).resolve().parent.parent
 
 app = FastAPI(
-    title="Analisis de inversion inmobiliaria",
-    version="1.0.0",
-    description="Estima precio de venta y arriendo de una propiedad en Macul, "
-                "La Florida, Nunoa o San Miguel, y evalua si conviene como "
-                "inversion para mantenerla y venderla a futuro.",
+    title="Tasacion inmobiliaria",
+    version="2.0.0",
+    description="Estima precio de venta (UF) y arriendo (CLP) de una propiedad "
+                "en Macul, La Florida, Nunoa o San Miguel.",
 )
 
 
-# ---------------------------------------------------------------------------
-# Esquemas
-# ---------------------------------------------------------------------------
 class Propiedad(BaseModel):
     """Atributos de la propiedad. Solo `m2_util` es obligatorio: lo que falte
     queda en NaN y baja el nivel de confianza declarado en la respuesta."""
@@ -62,18 +56,6 @@ class PeticionEstimacion(BaseModel):
         None, gt=0, description="Si se envia, se juzga si esta caro o barato")
 
 
-class PeticionAnalisis(BaseModel):
-    propiedad: Propiedad
-    precio_pedido_uf: float = Field(..., gt=0)
-    # Todos los supuestos son opcionales: si no vienen se usan los declarados
-    # en `inversion.Supuestos`, que estan documentados y son editables.
-    supuestos: dict[str, float] | None = None
-    n_simulaciones: int = Field(4000, ge=200, le=20000)
-
-
-# ---------------------------------------------------------------------------
-# Endpoints
-# ---------------------------------------------------------------------------
 @app.get("/salud")
 def salud() -> dict:
     """Comprobacion de vida: carga los dos modelos y responde con sus metricas."""
@@ -106,52 +88,17 @@ def estimar(p: PeticionEstimacion) -> dict:
     if p.precio_pedido_uf is not None:
         salida["juicio_de_precio"] = M.veredicto_precio(p.precio_pedido_uf,
                                                         est["venta"])
+    salida["advertencias"] = _advertencias(est)
     return salida
 
 
-@app.post("/analizar")
-def analizar(p: PeticionAnalisis) -> dict:
-    """El informe completo: cuanto vale, cuanto renta y si conviene tenerla."""
-    at = p.propiedad.a_atributos()
-    est = M.estimar_ambos(at)
-    mv, ma = M.cargar("venta"), M.cargar("arriendo")
-
-    s = INV.Supuestos(**(p.supuestos or {}))
-    analisis = INV.analizar(
-        precio_pedido_uf=p.precio_pedido_uf,
-        estimacion_venta_uf=est["venta"].valor,
-        arriendo_estimado_clp=est["arriendo"].valor,
-        uf=mv.uf,
-        sigma_venta=mv.sigma_log,
-        sigma_arriendo=ma.sigma_log,
-        comuna=at.get("comuna"),
-        s=s,
-        n_simulaciones=p.n_simulaciones,
-    )
-    return {
-        "tasacion": {"venta": est["venta"].a_dict(),
-                     "arriendo": est["arriendo"].a_dict()},
-        "juicio_de_precio": M.veredicto_precio(p.precio_pedido_uf, est["venta"]),
-        "inversion": analisis,
-        "advertencias": _advertencias(est),
-    }
-
-
-@app.post("/informe", response_class=HTMLResponse)
-def informe(p: PeticionAnalisis) -> str:
-    """El mismo analisis, renderizado como el informe que ve el usuario final."""
-    return INF.render(analizar(p), p.propiedad.a_atributos(), documento=True)
-
-
 def _advertencias(est: dict[str, M.Estimacion]) -> list[str]:
-    """Lo que el informe tiene que decir aunque nadie lo pregunte."""
+    """Los limites del modelo, que el consumidor tiene que declarar aunque no
+    los pregunte."""
     avisos = [
         "Las estimaciones son de precio PEDIDO, no de cierre: en Chile el cierre "
         "suele quedar entre un 5 % y un 15 % por debajo.",
-        "El modelo no estima plusvalía. El análisis entrega la plusvalía que "
-        "haría falta para que la inversión funcione, no un pronóstico de que "
-        "vaya a ocurrir.",
-        "Cobertura geográfica limitada a Macul, La Florida, Ñuñoa y San Miguel.",
+        "Cobertura geografica limitada a Macul, La Florida, Nunoa y San Miguel.",
     ]
     for op, e in est.items():
         for m in e.motivos:

@@ -385,19 +385,9 @@ def auditar_api(venta: dict, arriendo: dict) -> None:
           v1["venta"]["valor"] == v2["venta"]["valor"],
           f"{v1['venta']['valor']} vs {v2['venta']['valor']}")
 
-    # El analisis completo, de punta a punta.
-    r = c.post("/analizar", json={"propiedad": {**base, "comuna": "nunoa"},
-                                  "precio_pedido_uf": 4000, "n_simulaciones": 400})
-    check("POST /analizar responde 200", r.status_code == 200, r.text[:200])
-    if r.status_code == 200:
-        inv = r.json()["inversion"]
-        check("el analisis trae veredicto en sus dos dimensiones",
-              bool(inv.get("veredicto_retorno")) and bool(inv.get("veredicto_exigencia_caja")),
-              inv.get("veredicto", ""))
-        check("la probabilidad de exito esta en [0, 100]",
-              0 <= inv["horizonte"]["prob_batir_alternativa_pct"] <= 100)
-        check("el informe declara sus advertencias",
-              len(r.json()["advertencias"]) >= 3)
+    # Las advertencias viajan siempre con la estimacion.
+    check("la estimacion declara los limites del modelo",
+          len(v1["advertencias"]) >= 2, str(v1.get("advertencias"))[:120])
 
 
 def main() -> int:

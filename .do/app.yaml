@@ -9,7 +9,7 @@
 #   b) subirlos a un Space y bajarlos en el build, anadiendo el paso al Dockerfile.
 # La opcion (a) es la recomendada mientras los modelos pesen esto: mantiene el
 # artefacto versionado junto al codigo que lo produjo.
-name: inmobiliaria-api
+name: tasacion-inmobiliaria
 region: nyc
 services:
   - name: api

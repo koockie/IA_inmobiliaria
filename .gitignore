@@ -24,5 +24,3 @@ data/*.bak-*.sqlite
 # Modelos serializados (los .json de metricas SI se versionan)
 modelos/*.joblib
 
-# artefactos generados por scripts/informe_ejemplo.py
-informe_ejemplo*.html

@@ -1,6 +1,6 @@
-# Imagen de la API de analisis de inversion inmobiliaria.
-#   docker build -t inmobiliaria-api .
-#   docker run -p 8080:8080 inmobiliaria-api
+# Imagen de la API de tasacion inmobiliaria (sirve los dos modelos ML).
+#   docker build -t tasacion .
+#   docker run -p 8080:8080 tasacion
 FROM python:3.14-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
