@@ -1,0 +1,133 @@
+{
+  "objetivo": "precio_uf",
+  "operacion": "venta",
+  "fecha": "2026-08-30T23:53:37",
+  "algoritmo": "hist_gradient",
+  "n_total": 9812,
+  "n_train": 7852,
+  "n_test": 1960,
+  "division": "80/20 agrupado por edificio (GroupShuffleSplit)",
+  "semilla": 42,
+  "metricas_test": {
+    "n": 1960.0,
+    "MdAPE": 8.775,
+    "PPE10": 55.357,
+    "PPE20": 83.265,
+    "COD": 12.198,
+    "PRD": 1.029,
+    "R2": 0.87,
+    "MAE_UF": 699.275,
+    "seg": 7.2
+  },
+  "cobertura_intervalo_80": 78.7,
+  "cobertura_sin_calibrar": 66.1,
+  "variables": {
+    "estructurales": [
+      "m2_util",
+      "log_m2_util",
+      "m2_total",
+      "ratio_terraza",
+      "dormitorios",
+      "banos",
+      "densidad_banos",
+      "m2_por_dormitorio",
+      "estacionamientos",
+      "bodegas",
+      "tiene_estacionamiento",
+      "tiene_bodega",
+      "antiguedad",
+      "gastos_comunes_clp",
+      "es_casa"
+    ],
+    "ubicacion": [
+      "lat",
+      "lon",
+      "comuna"
+    ],
+    "vecindario": [
+      "log_dist_metro",
+      "log_dist_salud",
+      "log_dist_comercio",
+      "log_dist_universidad",
+      "log_dist_educacion",
+      "log_dist_parque",
+      "log_dist_supermercado",
+      "n_metro_1km",
+      "n_salud_1km",
+      "n_comercio_1km",
+      "n_universidad_1km",
+      "n_educacion_1km",
+      "n_parque_1km",
+      "n_supermercado_1km",
+      "servicios_truncado"
+    ]
+  },
+  "comparacion_modelos": [
+    {
+      "modelo": "hist_gradient",
+      "n": 1960,
+      "MdAPE": 8.775,
+      "PPE10": 55.357,
+      "PPE20": 83.265,
+      "COD": 12.198,
+      "PRD": 1.029,
+      "R2": 0.87,
+      "MAE_UF": 699.275,
+      "seg": 7.2
+    },
+    {
+      "modelo": "xgboost",
+      "n": 1960,
+      "MdAPE": 8.926,
+      "PPE10": 55.051,
+      "PPE20": 83.214,
+      "COD": 12.177,
+      "PRD": 1.03,
+      "R2": 0.866,
+      "MAE_UF": 703.766,
+      "seg": 4.1
+    },
+    {
+      "modelo": "lightgbm",
+      "n": 1960,
+      "MdAPE": 9.08,
+      "PPE10": 54.796,
+      "PPE20": 82.806,
+      "COD": 12.286,
+      "PRD": 1.03,
+      "R2": 0.868,
+      "MAE_UF": 706.248,
+      "seg": 3.3
+    },
+    {
+      "modelo": "random_forest",
+      "n": 1960,
+      "MdAPE": 9.599,
+      "PPE10": 52.194,
+      "PPE20": 81.633,
+      "COD": 13.064,
+      "PRD": 1.055,
+      "R2": 0.842,
+      "MAE_UF": 757.047,
+      "seg": 2.4
+    },
+    {
+      "modelo": "ridge (log-lineal del articulo)",
+      "n": 1960,
+      "MdAPE": 12.025,
+      "PPE10": 42.143,
+      "PPE20": 74.133,
+      "COD": 15.627,
+      "PRD": 1.043,
+      "R2": 0.835,
+      "MAE_UF": 855.884,
+      "seg": 0.1
+    }
+  ],
+  "sesgos_declarados": [
+    "Precios de publicacion, no de cierre: en Chile el sesgo tipico es 5-15% sobre el precio final. El modelo estima precio pedido esperado.",
+    "Fuente unica (portalinmobiliario) en venta: sin validacion externa posible.",
+    "Foto de 15 dias: no capta tendencia temporal ni plusvalia.",
+    "Las categorias comercio, salud y educacion son proxies de densidad, no malls, hospitales ni colegios en sentido estricto."
+  ]
+}

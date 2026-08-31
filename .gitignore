@@ -20,3 +20,6 @@ ml/artifacts/*.joblib
 
 # Respaldos automaticos de la base (los crea servicios_cercanos.ipynb)
 data/*.bak-*.sqlite
+
+# Modelos serializados (los .json de metricas SI se versionan)
+modelos/*.joblib
