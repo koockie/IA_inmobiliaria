@@ -1,0 +1,10 @@
+.venv/
+.git/
+data/
+qa/
+scripts/
+*.ipynb
+*.md
+__pycache__/
+*.pyc
+.env
