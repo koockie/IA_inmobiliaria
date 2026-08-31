@@ -1,0 +1,180 @@
+{
+  "objetivo": "precio_clp",
+  "operacion": "arriendo",
+  "fecha": "2026-08-31T00:22:31",
+  "algoritmo": "xgboost",
+  "n_total": 5662,
+  "n_train": 4419,
+  "n_test": 1243,
+  "division": "80/20 agrupado por edificio (GroupShuffleSplit)",
+  "semilla": 42,
+  "metricas_test": {
+    "n": 1243.0,
+    "MdAPE": 7.75,
+    "PPE10": 59.855,
+    "PPE20": 86.002,
+    "COD": 11.62,
+    "PRD": 1.032,
+    "R2": 0.804,
+    "MAE_CLP": 62908.202,
+    "seg": 2.2
+  },
+  "piso_mediana_mdape": 20.3,
+  "equidad_vertical": {
+    "MdAPE": 7.75,
+    "COD": 11.62,
+    "PRD": 1.032,
+    "ratio_20%_mas_barato": 1.044,
+    "ratio_20%_mas_caro": 0.94
+  },
+  "metricas_por_fuente": {
+    "cp": {
+      "n": 242.0,
+      "MdAPE": 9.914,
+      "PPE10": 50.0,
+      "ratio_mediano": 1.003
+    },
+    "pi": {
+      "n": 1001.0,
+      "MdAPE": 7.294,
+      "PPE10": 62.238,
+      "ratio_mediano": 1.0
+    }
+  },
+  "metricas_por_tipo": {
+    "casa": {
+      "n": 46.0,
+      "MdAPE": 11.807,
+      "PPE10": 45.652,
+      "ratio_mediano": 0.974
+    },
+    "departamento": {
+      "n": 1197.0,
+      "MdAPE": 7.635,
+      "PPE10": 60.401,
+      "ratio_mediano": 1.002
+    }
+  },
+  "cobertura_intervalo_80": 81.2,
+  "cobertura_sin_calibrar": 65.1,
+  "aporte_por_bloque_pct": {
+    "estructural": 52.3,
+    "ubicacion": 37.3,
+    "vecindario": 10.4
+  },
+  "variables": {
+    "estructurales": [
+      "m2_util",
+      "log_m2_util",
+      "m2_total",
+      "ratio_terraza",
+      "dormitorios",
+      "banos",
+      "densidad_banos",
+      "m2_por_dormitorio",
+      "estacionamientos",
+      "bodegas",
+      "tiene_estacionamiento",
+      "tiene_bodega",
+      "antiguedad",
+      "gastos_comunes_clp",
+      "es_casa"
+    ],
+    "ubicacion": [
+      "lat",
+      "lon",
+      "sin_geo",
+      "comuna"
+    ],
+    "vecindario": [
+      "log_dist_metro",
+      "log_dist_salud",
+      "log_dist_comercio",
+      "log_dist_universidad",
+      "log_dist_educacion",
+      "log_dist_parque",
+      "log_dist_supermercado",
+      "n_metro_1km",
+      "n_salud_1km",
+      "n_comercio_1km",
+      "n_universidad_1km",
+      "n_educacion_1km",
+      "n_parque_1km",
+      "n_supermercado_1km",
+      "servicios_truncado",
+      "sin_servicios"
+    ]
+  },
+  "comparacion_modelos": [
+    {
+      "modelo": "random_forest",
+      "n": 1243,
+      "MdAPE": 7.73,
+      "PPE10": 60.338,
+      "PPE20": 85.68,
+      "COD": 11.553,
+      "PRD": 1.046,
+      "R2": 0.742,
+      "MAE_CLP": 65097.556,
+      "seg": 1.0
+    },
+    {
+      "modelo": "xgboost",
+      "n": 1243,
+      "MdAPE": 7.75,
+      "PPE10": 59.855,
+      "PPE20": 86.002,
+      "COD": 11.62,
+      "PRD": 1.032,
+      "R2": 0.804,
+      "MAE_CLP": 62908.202,
+      "seg": 2.2
+    },
+    {
+      "modelo": "ridge (log-lineal del articulo)",
+      "n": 1243,
+      "MdAPE": 7.953,
+      "PPE10": 59.453,
+      "PPE20": 85.036,
+      "COD": 12.338,
+      "PRD": 1.041,
+      "R2": 0.723,
+      "MAE_CLP": 68897.284,
+      "seg": 0.1
+    },
+    {
+      "modelo": "hist_gradient",
+      "n": 1243,
+      "MdAPE": 8.165,
+      "PPE10": 58.166,
+      "PPE20": 85.841,
+      "COD": 11.802,
+      "PRD": 1.031,
+      "R2": 0.817,
+      "MAE_CLP": 62652.84,
+      "seg": 3.9
+    },
+    {
+      "modelo": "lightgbm",
+      "n": 1243,
+      "MdAPE": 8.261,
+      "PPE10": 57.603,
+      "PPE20": 85.278,
+      "COD": 12.056,
+      "PRD": 1.031,
+      "R2": 0.803,
+      "MAE_CLP": 64761.455,
+      "seg": 1.8
+    }
+  ],
+  "sesgos_declarados": [
+    "Precios de publicacion, no de cierre: el modelo estima arriendo PEDIDO esperado. En Chile el sesgo tipico es de 5-15% sobre el valor de cierre.",
+    "Sesgo de seleccion invertido: el dataset es una foto del stock publicado. Lo bien valorado se arrienda rapido y desaparece del stock; lo sobrevalorado se acumula.",
+    "Dos poblaciones distintas: 76% con datos completos y 24% con solo cinco campos (comuna, tipo, superficie util, dormitorios, banos). Ver metricas_por_fuente.",
+    "Casi no hay casas: 200 contra 5,462 departamentos. Las estimaciones de casa se marcan de baja confianza.",
+    "Sin dispersion temporal: 3 fechas de scrape en 15 dias y la UF vario 0,16%. No procede ajuste temporal, y deflactar por fecha_publicacion seria un error metodologico.",
+    "Las categorias comercio, salud y educacion son proxies de densidad comercial, no malls, hospitales ni colegios en sentido estricto. Solo metro es un catalogo verificado.",
+    "Regresivo en los extremos: PRD 1.032, por encima de la banda IAAO (0,98-1,03). Subvalora el 20% de arriendos mas caros (ratio mediano 0.94) y sobrevalora el 20% mas barato (ratio 1.04). Se probaron 5 variantes de algoritmo y forma funcional y ninguna entro en banda.",
+    "No estima plusvalia ni crecimiento del sector: el dataset es una foto de 15 dias."
+  ]
+}
