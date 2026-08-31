@@ -17,3 +17,6 @@ ml/artifacts/*.joblib
 
 # Jupyter
 .ipynb_checkpoints/
+
+# Respaldos automaticos de la base (los crea servicios_cercanos.ipynb)
+data/*.bak-*.sqlite
