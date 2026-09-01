@@ -1,7 +1,7 @@
 {
   "objetivo": "precio_clp",
   "operacion": "arriendo",
-  "fecha": "2026-08-31T00:22:31",
+  "fecha": "2026-08-31T19:52:19",
   "algoritmo": "xgboost",
   "n_total": 5662,
   "n_train": 4419,
@@ -17,7 +17,7 @@
     "PRD": 1.032,
     "R2": 0.804,
     "MAE_CLP": 62908.202,
-    "seg": 2.2
+    "seg": 1.7
   },
   "piso_mediana_mdape": 20.3,
   "equidad_vertical": {
@@ -116,7 +116,7 @@
       "PRD": 1.046,
       "R2": 0.742,
       "MAE_CLP": 65097.556,
-      "seg": 1.0
+      "seg": 0.9
     },
     {
       "modelo": "xgboost",
@@ -128,7 +128,7 @@
       "PRD": 1.032,
       "R2": 0.804,
       "MAE_CLP": 62908.202,
-      "seg": 2.2
+      "seg": 1.7
     },
     {
       "modelo": "ridge (log-lineal del articulo)",
@@ -140,7 +140,7 @@
       "PRD": 1.041,
       "R2": 0.723,
       "MAE_CLP": 68897.284,
-      "seg": 0.1
+      "seg": 0.0
     },
     {
       "modelo": "hist_gradient",
@@ -152,7 +152,7 @@
       "PRD": 1.031,
       "R2": 0.817,
       "MAE_CLP": 62652.84,
-      "seg": 3.9
+      "seg": 3.7
     },
     {
       "modelo": "lightgbm",
@@ -164,7 +164,7 @@
       "PRD": 1.031,
       "R2": 0.803,
       "MAE_CLP": 64761.455,
-      "seg": 1.8
+      "seg": 1.1
     }
   ],
   "sesgos_declarados": [

@@ -1,7 +1,7 @@
 {
   "objetivo": "precio_uf",
   "operacion": "venta",
-  "fecha": "2026-08-30T23:53:37",
+  "fecha": "2026-08-31T19:22:21",
   "algoritmo": "hist_gradient",
   "n_total": 9812,
   "n_train": 7852,
@@ -17,7 +17,7 @@
     "PRD": 1.029,
     "R2": 0.87,
     "MAE_UF": 699.275,
-    "seg": 7.2
+    "seg": 3.6
   },
   "cobertura_intervalo_80": 78.7,
   "cobertura_sin_calibrar": 66.1,
@@ -73,7 +73,7 @@
       "PRD": 1.029,
       "R2": 0.87,
       "MAE_UF": 699.275,
-      "seg": 7.2
+      "seg": 3.6
     },
     {
       "modelo": "xgboost",
@@ -85,7 +85,7 @@
       "PRD": 1.03,
       "R2": 0.866,
       "MAE_UF": 703.766,
-      "seg": 4.1
+      "seg": 2.1
     },
     {
       "modelo": "lightgbm",
@@ -97,7 +97,7 @@
       "PRD": 1.03,
       "R2": 0.868,
       "MAE_UF": 706.248,
-      "seg": 3.3
+      "seg": 1.7
     },
     {
       "modelo": "random_forest",
@@ -109,7 +109,7 @@
       "PRD": 1.055,
       "R2": 0.842,
       "MAE_UF": 757.047,
-      "seg": 2.4
+      "seg": 1.4
     },
     {
       "modelo": "ridge (log-lineal del articulo)",
