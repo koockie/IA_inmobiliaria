@@ -21,6 +21,14 @@ ml/artifacts/*.joblib
 # Respaldos automaticos de la base (los crea servicios_cercanos.ipynb)
 data/*.bak-*.sqlite
 
-# Modelos serializados (los .json de metricas SI se versionan)
-modelos/*.joblib
+# Los modelos entrenados SI se versionan: pesan ~10 MB entre los dos y son lo
+# que permite clonar la rama y levantar la API sin reentrenar nada. Si algun dia
+# crecen mucho, la alternativa es un Space de DigitalOcean, no volver a ignorarlos.
+# modelos/*.joblib
 
+
+# Artefactos de ejecucion del scraper (viven en la rama scrapping_PI_v0 y no
+# tienen por que entrar aqui, pero al cambiar de rama quedan sueltos en data/)
+data/cache_fichas/
+data/consultas_usuario.sqlite
+data/uf_ultimo_valor.json
