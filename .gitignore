@@ -11,3 +11,12 @@ venv/
 *.sqlite-journal
 *.sqlite-wal
 *.sqlite-shm
+
+# Artefactos de runtime del extractor
+data/cache_fichas/
+data/consultas_usuario.sqlite
+data/uf_ultimo_valor.json
+
+# Artefactos que viven en la rama modeloML, no en esta
+modelos/*.joblib
+data/*.bak-*.sqlite

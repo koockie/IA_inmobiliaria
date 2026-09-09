@@ -4,3 +4,7 @@ beautifulsoup4>=4.12 # parseo del HTML
 lxml>=5.0            # parser rápido usado por BeautifulSoup
 
 # sqlite3, csv, re, argparse vienen incluidos en la librería estándar de Python
+
+# El modulo extractor/ solo necesita httpx: parsea con json y re de la libreria
+# estandar, sin BeautifulSoup, para que quepa liviano en el contenedor de la API.
+pytest>=8.0          # tests del extractor (offline, con fixtures)
