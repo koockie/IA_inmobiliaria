@@ -6,3 +6,24 @@ venv/
 .pytest_cache/
 .mypy_cache/
 *.egg-info/
+
+# Archivos temporales de SQLite (transacciones en curso)
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+
+# Artefactos de runtime del extractor: se generan al consultar avisos y no
+# forman parte del dataset con el que se entrenaron los modelos
+data/cache_fichas/
+data/consultas_usuario.sqlite
+data/uf_ultimo_valor.json
+
+# Respaldos automaticos de la base y logs de las corridas del scraper
+data/*.bak-*.sqlite
+data/scrape_*.log
+
+# Checkpoints de Jupyter
+.ipynb_checkpoints/
+
+# Los modelos entrenados SI se versionan: pesan unos 10 MB entre los dos y son
+# lo que permite clonar el repositorio y levantar la API sin reentrenar nada

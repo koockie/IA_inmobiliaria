@@ -1,0 +1,12 @@
+# Versiones ancladas a proposito: un .joblib de scikit-learn solo garantiza
+# cargar con la misma version con la que se serializo. Si se suben, hay que
+# reentrenar y volver a correr qa/qa_modelos.py.
+fastapi==0.136.3
+uvicorn[standard]==0.49.0
+pydantic==2.13.4
+scikit-learn==1.9.0
+xgboost==3.4.1
+numpy==2.5.2
+pandas==3.0.5
+scipy==1.18.0
+joblib==1.5.3

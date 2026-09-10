@@ -1,0 +1,35 @@
+# Especificacion para DigitalOcean App Platform.
+#   doctl apps create --spec .do/app.yaml
+#
+# Nota importante: `modelos/*.joblib` esta en .gitignore, asi que un despliegue
+# que construya desde el repositorio NO los tendra. Antes de desplegar hay que
+# resolverlo de una de estas dos formas:
+#   a) sacar esa linea del .gitignore y commitear los dos archivos (~10 MB en
+#      total, muy por debajo del limite de GitHub); o
+#   b) subirlos a un Space y bajarlos en el build, anadiendo el paso al Dockerfile.
+# La opcion (a) es la recomendada mientras los modelos pesen esto: mantiene el
+# artefacto versionado junto al codigo que lo produjo.
+name: tasacion-inmobiliaria
+region: nyc
+services:
+  - name: api
+    dockerfile_path: Dockerfile
+    source_dir: /
+    github:
+      repo: koockie/IA_inmobiliaria
+      branch: main
+      deploy_on_push: true
+    http_port: 8080
+    instance_count: 1
+    # basic-xxs (512 MB) alcanza: los dos modelos ocupan ~10 MB en disco y el
+    # proceso se estabiliza bajo 400 MB con pandas y xgboost cargados.
+    instance_size_slug: basic-xxs
+    health_check:
+      http_path: /salud
+      initial_delay_seconds: 40
+      period_seconds: 30
+    routes:
+      - path: /
+    envs:
+      - key: PYTHONUNBUFFERED
+        value: "1"
