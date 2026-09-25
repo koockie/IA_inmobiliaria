@@ -92,8 +92,18 @@ class ModeloTasacion:
         tiene_geo = lat is not None and lon is not None and np.isfinite(
             float(lat) if lat is not None else np.nan)
 
+        # Ser casa solo baja la confianza si el modelo REALMENTE acierta menos en
+        # casas. En arriendo pasa (11,8 % contra 7,8 %: solo 224 casas en la base),
+        # pero en venta un tercio del dataset son casas y el error es el mismo, asi
+        # que avisar ahi seria mentirle al usuario. El umbral de 10 % evita que una
+        # diferencia de centesimas dispare el aviso.
+        casa_penalizada = es_casa and self.mdape_casa > self.mdape * 1.10
+        if casa_penalizada:
+            motivos.append(
+                f"es una casa: el modelo acierta menos en casas "
+                f"({self.mdape_casa:.1f} % de error típico contra "
+                f"{self.mdape:.1f} % general)")
         if es_casa:
-            motivos.append("es una casa: el modelo se entrenó con muy pocas")
             error = max(error, self.mdape_casa)
         if not tiene_geo:
             motivos.append("sin coordenadas: se estima sin ubicación fina ni servicios cercanos")
@@ -105,7 +115,7 @@ class ModeloTasacion:
         if self.comunas and at.get("comuna") not in self.comunas:
             motivos.append("comuna fuera de las cuatro cubiertas por el modelo")
 
-        if es_casa or len(motivos) >= 2:
+        if casa_penalizada or len(motivos) >= 2:
             confianza = "baja"
         elif motivos:
             confianza = "media"
